@@ -1,0 +1,13 @@
+extend layout
+
+block content
+    for gallery in images.children
+        div.row
+            h1 #{gallery.name}
+            for image in gallery.children
+                a(href="#{image.path}")
+                    img(src="#{image.path}" width=150 height=150)
+
+block sidebar
+    .widget
+        h1 Widget
