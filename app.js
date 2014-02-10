@@ -3,6 +3,8 @@ var express = require('express'),
     fs = require('fs'),
     path = require('path');
 
+var DEBUG = true;
+
 var readFiles = function(p, callback) {
     var images = [];
     p = p || '/';
@@ -28,7 +30,7 @@ var readFiles = function(p, callback) {
 
 var cache = {};
 var loadJsonFile = function(fileName, callback) {
-    if(!!cache[fileName]) {
+    if(!!cache[fileName] && !DEBUG) {
         console.log('Read from cache' + fileName);
         callback(cache[fileName]);
     } else {
@@ -61,13 +63,38 @@ app.use(stylus.middleware({
 }));
 app.use(express.static(__dirname + '/public'));
 
-app.get('/', function(req, res) {
-    loadJsonFile('listing.json', function(galleries) {
+var buildGalleryModel = function(galleries) {
         var nav = [];
+        var galleryImages = [];
         galleries.children.forEach(function(child){
             nav.push(child.name);
+            var gallery = {
+                title: child.name,
+                images: [],
+                thumbnails: []
+            };
+            child.children.forEach(function(image) {
+                if(image.name === "thumbnails") {
+                    image.children.forEach(function(thumbnail){
+                        thumbnail.url = thumbnail.path.split('/')
+                            .splice(0,2).join('/')+ '/' + thumbnail.name;
+                        gallery.thumbnails.push(thumbnail);
+                    });
+                } 
+            });
+            galleryImages.push(gallery);
         });
-        res.render('index', { title: 'Home', images: galleries, nav: nav });
+        return {
+            title: 'Home',
+            nav: nav,
+            galleries: galleryImages
+        };
+};
+
+app.get('/', function(req, res) {
+    loadJsonFile('listing.json', function(galleries) {
+        var model = buildGalleryModel(galleries);
+        res.render('index', model);
     });
 
     // readFiles('public/images', function(images) {

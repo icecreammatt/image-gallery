@@ -2,13 +2,13 @@ doctype html
 html
     head
         title #{title} - My Site
-        <!-- link(rel='stylesheet', href='/stylesheets/style.css') -->
+        link(rel='stylesheet', href='/stylesheets/style.css')
     body
         header
-        h1 #{title} My Site
-        nav
-            for item in nav
-                span #{item} 
+            h1 #{title} My Site
+            nav
+                for item in nav
+                    span #{item} 
         .container
             .main-content
                 block content

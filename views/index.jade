@@ -1,12 +1,12 @@
 extend layout
 
 block content
-    for gallery in images.children
+    for gallery in galleries
         div.row
-            h1 #{gallery.name}
-            for image in gallery.children
-                a(href="#{image.path}")
-                    img(src="#{image.path}" width=150 height=150)
+            h1 #{gallery.title}
+            for image in gallery.thumbnails
+                a(href="#{image.url}")
+                    div(style="background-image: url('#{image.path}');")
 
 block sidebar
     .widget

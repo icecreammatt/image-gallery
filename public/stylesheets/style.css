@@ -1,0 +1,25 @@
+body {
+  background: #f0f0f0;
+  color: 333;
+}
+header {
+  background: #333;
+  color: #fff;
+  width: 100%;
+  height: 200px;
+}
+div .row {
+  display: block;
+  background: #808080;
+}
+a div {
+  margin: 10px;
+  display: inline-block;
+  width: 150px;
+  height: 150px;
+  background-color: #000;
+  background-size: 150px auto;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+}
